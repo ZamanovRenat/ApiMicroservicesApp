@@ -35,9 +35,11 @@ namespace PlatformService.Data
             }
             _context.Platforms.Add(platform);
         }
-        public void UpdatePlatform(Platform platform)
+        public void UpdatePlatform(int id)
         {
+            Platform platform = _context.Platforms.FirstOrDefault(u => u.Id == id);
             _context.Platforms.Update(platform);
+            _context.SaveChanges();
         }
         public void DeletePlatformById(int id)
         {

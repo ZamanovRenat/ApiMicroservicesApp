@@ -5,7 +5,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 string connection = builder.Configuration.GetConnectionString("DefaultConnection");
 // Add services to the container.
-builder.Services.AddDbContext<AppDbContext>(opt => opt.UseSqlite(connection));
+builder.Services.AddDbContext<AppDbContext>(opt =>
+                     opt.UseInMemoryDatabase("InMem"));
+//builder.Services.AddDbContext<AppDbContext>(opt => opt.UseSqlite(connection));
 builder.Services.AddScoped<IPlatformRepo, PlatformRepo>();
 builder.Services.AddControllers();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
@@ -27,5 +29,6 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+PrepDb.PrepPopulation(app, app.Environment.IsProduction());
 
 app.Run();
