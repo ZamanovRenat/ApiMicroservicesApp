@@ -4,11 +4,12 @@ using PlatformService.SyncDataServices.Http;
 
 var builder = WebApplication.CreateBuilder(args);
 
-string connection = builder.Configuration.GetConnectionString("DefaultConnection");
+string connection = builder.Configuration.GetConnectionString("PlatformsConn");
 // Add services to the container.
 builder.Services.AddDbContext<AppDbContext>(opt =>
                      opt.UseInMemoryDatabase("InMem"));
-//builder.Services.AddDbContext<AppDbContext>(opt => opt.UseSqlite(connection));
+builder.Services.AddDbContext<AppDbContext>(options =>
+options.UseSqlServer(connection));
 builder.Services.AddScoped<IPlatformRepo, PlatformRepo>();
 builder.Services.AddHttpClient<ICommandDataClient, HttpCommandDataClient>();
 builder.Services.AddControllers();
